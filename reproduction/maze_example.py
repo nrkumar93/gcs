@@ -59,6 +59,14 @@ gcs.addSourceTarget(start, goal)
 gcs.setSolver(MosekSolver())
 waypoints, results_dict = gcs.SolvePath(relaxation)[0]
 
-vertices = gcs.Vertices()
+print(*waypoints)
+# corres = []
+# for i, w in enumerate(waypoints):
+#     for j, r in enumerate(regions):
+#         print(w)
+#         if r.PointInSet(w):
+#             corres.append([i, j])
 
-
+# print(corres)
+plt.plot(*waypoints, 'b')
+plt.show()
