@@ -11,6 +11,8 @@ from gcs.bezier import BezierGCS
 from gcs.linear import LinearGCS
 from models.maze import Maze
 
+import util
+
 os.environ["MOSEKLM_LICENSE_FILE"] = "/home/gaussian/Documents/softwares/mosektoolslinux64x86/mosek.lic"
 MosekSolver.AcquireLicense()
 print("Mosek is enabled: ", MosekSolver().enabled())
@@ -32,20 +34,26 @@ while knock_downs > 0:
         maze.knock_down_wall(cell, choice(walls))
         knock_downs -= 1
 
-regions = []
-edges = []
-for x in range(maze_size):
-    for y in range(maze_size):
-        regions.append(HPolyhedron.MakeBox([x, y], [x+1., y+1.]))
-        C = y + x * maze.ny
-        if not maze.map[x][y].walls['N']:
-            edges.append((C, C + 1))
-        if not maze.map[x][y].walls['S']:
-            edges.append((C, C - 1))
-        if not maze.map[x][y].walls['E']:
-            edges.append((C, C + maze.ny))
-        if not maze.map[x][y].walls['W']:
-            edges.append((C, C - maze.ny))
+# regions = []
+# edges = []
+# for x in range(maze_size):
+#     for y in range(maze_size):
+#         regions.append(HPolyhedron.MakeBox([x, y], [x+1., y+1.]))
+#         C = y + x * maze.ny
+#         if not maze.map[x][y].walls['N']:
+#             edges.append((C, C + 1))
+#         if not maze.map[x][y].walls['S']:
+#             edges.append((C, C - 1))
+#         if not maze.map[x][y].walls['E']:
+#             edges.append((C, C + maze.ny))
+#         if not maze.map[x][y].walls['W']:
+#             edges.append((C, C - maze.ny))
+# util.SerializeRegions(regions, './data/maze.csv')
+# util.SerializeEdges(edges, './data/maze_edges.csv')
+
+regions = util.DeserializeRegions('./data/maze.csv')
+edges = util.DeserializeEdges('./data/maze_edges.csv')
+
 
 def plot_maze():
     plt.figure(figsize=(5,5))
@@ -55,11 +63,19 @@ def plot_maze():
     plt.plot(*goal, 'kx', markersize=10)
 relaxation = True
 gcs = LinearGCS(regions, edges)
+# order = 5
+# continuity = 3
+# gcs = BezierGCS(regions, order, continuity, edges)
 gcs.addSourceTarget(start, goal)
 gcs.setSolver(MosekSolver())
-waypoints, results_dict = gcs.SolvePath(relaxation)[0]
+waypoints, results_dict, best_path = gcs.SolvePath(relaxation)
 
-print(*waypoints)
+print("\n")
+for edge in best_path:
+    print(edge.u().id().get_value(), edge.v().id().get_value())
+
+
+
 # corres = []
 # for i, w in enumerate(waypoints):
 #     for j, r in enumerate(regions):
@@ -68,5 +84,5 @@ print(*waypoints)
 #             corres.append([i, j])
 
 # print(corres)
-plt.plot(*waypoints, 'b')
-plt.show()
+# plt.plot(*waypoints, 'b')
+# plt.show()
