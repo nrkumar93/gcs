@@ -80,4 +80,4 @@ class LinearGCS(BaseGCS):
             waypoints = np.concatenate(
                 [waypoints, np.expand_dims(new_waypoint, 1)], axis=1)
 
-        return waypoints, results_dict
+        return waypoints, results_dict, best_path
