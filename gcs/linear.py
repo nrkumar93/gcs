@@ -30,7 +30,9 @@ class LinearGCS(BaseGCS):
             np.zeros(self.dimension))
 
         for i, r in enumerate(self.regions):
-            self.gcs.AddVertex(r, name = self.names[i] if not self.names is None else '')
+            vertex = self.gcs.AddVertex(r, name = self.names[i] if not self.names is None else '')
+            # print('added vertex with id: ', vertex.id().get_value())
+
 
         if edges is None:
             if full_dim_overlap:

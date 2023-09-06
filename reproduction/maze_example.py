@@ -71,9 +71,13 @@ gcs.setSolver(MosekSolver())
 waypoints, results_dict, best_path = gcs.SolvePath(relaxation)
 
 print("\n")
+soln_vid = []
 for edge in best_path:
-    print(edge.u().id().get_value(), edge.v().id().get_value())
+    # print(edge.u().id().get_value(), edge.v().id().get_value(), edge.id().get_value())
+    soln_vid.append(edge.u().id().get_value())
 
+soln_vid = [s-1 for s in soln_vid]
+# print(soln_vid, sep=", ")
 
 
 # corres = []
@@ -84,5 +88,12 @@ for edge in best_path:
 #             corres.append([i, j])
 
 # print(corres)
-# plt.plot(*waypoints, 'b')
-# plt.show()
+
+print(waypoints.shape)
+opt_soln = np.loadtxt('./data/opt_soln.txt', delimiter=',')
+print(opt_soln.T.shape)
+
+plot_maze()
+plt.plot(*waypoints, 'b')
+plt.plot(*opt_soln.T, 'r')
+plt.show()
