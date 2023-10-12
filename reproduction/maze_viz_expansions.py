@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from matplotlib.collections import PatchCollection
 from random import choice, randint, seed
 
@@ -26,7 +27,7 @@ while knock_downs > 0:
 
 regions = util.DeserializeRegions('./data/maze.csv')
 edges = util.DeserializeEdges('./data/maze_edges.csv')
-incom_edge_count = np.loadtxt('/home/gaussian/cmu_ri_phd/phd_research/ixg/logs/tmp_incom_edge_count.txt', delimiter=' ')
+incom_edge_count = np.loadtxt('./data/maze_incom_edge_count.txt', delimiter=' ')
 xx = []
 yy = []
 col = []
@@ -48,8 +49,9 @@ def plot_maze():
 
 plot_maze()
 # Create a scatter plot with square markers and colors
-plt.scatter(xx, yy, s=100, c=col, cmap='viridis')
+plt.scatter(xx, yy, s=10, c=col, cmap='viridis', norm=mpl.colors.LogNorm())
 # Add a color bar for reference
 cbar = plt.colorbar()
-cbar.set_label('Values')
+cbar.set_label('Number of re-expansions')
+plt.savefig('./data/maze_num_incom_edges_basic_w1.pdf')
 plt.show()
