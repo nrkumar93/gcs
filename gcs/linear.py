@@ -39,6 +39,11 @@ class LinearGCS(BaseGCS):
                 edges = self.findEdgesViaFullDimensionOverlaps()
             else:
                 edges = self.findEdgesViaOverlaps()
+        else:
+            vertices = self.gcs.Vertices()
+            target_idx = edges[-1][1]
+            self.target = vertices[target_idx]
+
 
         vertices = self.gcs.Vertices()
         for ii, jj in edges:
@@ -67,13 +72,33 @@ class LinearGCS(BaseGCS):
             edge.AddCost(Binding[Cost](
                 self.edge_cost, np.append(edge.xu(), edge.xv())))
 
+    def addSource(self, source):
+        source_edges = super().addSource(source)
+
+        for edge in source_edges:
+            for jj in range(self.dimension):
+                edge.AddConstraint(edge.xu()[jj] == edge.xv()[jj])
+
+    def addTarget(self, target):
+        target_edges = super().addTarget(target)
+
+        for edge in target_edges:
+            edge.AddCost(Binding[Cost](
+                self.edge_cost, np.append(edge.xu(), edge.xv())))
+
+    def getVertex(self, cset):
+        vertices = self.gcs.Vertices()
+        for v in vertices:
+            if v.set() == cset:
+                return v
+        return None
 
     def SolvePath(self, rounding=False, verbose=False, preprocessing=False):
         best_path, best_result, results_dict = self.solveGCS(
             rounding, preprocessing, verbose)
 
         if best_path is None:
-            return None, results_dict
+            return None, best_result, results_dict, None
 
         # Extract trajectory
         waypoints = np.empty((self.dimension, 0))
@@ -82,4 +107,4 @@ class LinearGCS(BaseGCS):
             waypoints = np.concatenate(
                 [waypoints, np.expand_dims(new_waypoint, 1)], axis=1)
 
-        return waypoints, results_dict, best_path
+        return waypoints, best_result, results_dict, best_path

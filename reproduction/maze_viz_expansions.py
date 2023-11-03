@@ -1,14 +1,11 @@
-import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-from matplotlib.collections import PatchCollection
-from random import choice, randint, seed
+from random import choice, randint
 
 from models.maze import Maze
 
-import util
-
+from gcs import util
 
 maze_size = 50
 knock_downs = 100
@@ -27,13 +24,17 @@ while knock_downs > 0:
 
 regions = util.DeserializeRegions('./data/maze.csv')
 edges = util.DeserializeEdges('./data/maze_edges.csv')
-incom_edge_count = np.loadtxt('./data/maze_incom_edge_count.txt', delimiter=' ')
+incom_edge_count = np.loadtxt('/home/gaussian/cmu_ri_phd/phd_research/ixg/logs/insatxgcs_incom_edge_count_1.txt', delimiter=' ')
+# incom_edge_count = np.loadtxt('/home/gaussian/cmu_ri_phd/phd_research/ixg/logs/insatxgcs_lb_cost.txt', delimiter=' ')
 xx = []
 yy = []
 col = []
+clamp_div = 50
 for val in incom_edge_count:
     vtx = val[0]
     if vtx > len(regions):
+        continue
+    if val[1] > 990:
         continue
     ctr = regions[int(vtx)-1].ChebyshevCenter()
     xx.append(ctr[0])
@@ -53,5 +54,5 @@ plt.scatter(xx, yy, s=10, c=col, cmap='viridis', norm=mpl.colors.LogNorm())
 # Add a color bar for reference
 cbar = plt.colorbar()
 cbar.set_label('Number of re-expansions')
-plt.savefig('./data/maze_num_incom_edges_basic_w1.pdf')
+plt.savefig('./data/maze_num_incom_edges_dup_w1.pdf')
 plt.show()

@@ -11,7 +11,7 @@ from gcs.bezier import BezierGCS
 from gcs.linear import LinearGCS
 from models.maze import Maze
 
-import util
+from gcs import util
 
 os.environ["MOSEKLM_LICENSE_FILE"] = "/home/gaussian/Documents/softwares/mosektoolslinux64x86/mosek.lic"
 MosekSolver.AcquireLicense()
@@ -34,25 +34,8 @@ while knock_downs > 0:
         maze.knock_down_wall(cell, choice(walls))
         knock_downs -= 1
 
-# regions = []
-# edges = []
-# for x in range(maze_size):
-#     for y in range(maze_size):
-#         regions.append(HPolyhedron.MakeBox([x, y], [x+1., y+1.]))
-#         C = y + x * maze.ny
-#         if not maze.map[x][y].walls['N']:
-#             edges.append((C, C + 1))
-#         if not maze.map[x][y].walls['S']:
-#             edges.append((C, C - 1))
-#         if not maze.map[x][y].walls['E']:
-#             edges.append((C, C + maze.ny))
-#         if not maze.map[x][y].walls['W']:
-#             edges.append((C, C - maze.ny))
-# util.SerializeRegions(regions, './data/maze.csv')
-# util.SerializeEdges(edges, './data/maze_edges.csv')
-
-regions = util.DeserializeRegions('./data/maze.csv')
-edges = util.DeserializeEdges('./data/maze_edges.csv')
+regions = util.DeserializeRegions('../data/maze.csv')
+edges = util.DeserializeEdges('../data/maze_edges.csv')
 
 
 def plot_maze():
@@ -61,14 +44,22 @@ def plot_maze():
     maze.plot(1)
     plt.plot(*start, 'kx', markersize=10)
     plt.plot(*goal, 'kx', markersize=10)
-relaxation = True
-gcs = LinearGCS(regions, edges)
-# order = 5
-# continuity = 3
-# gcs = BezierGCS(regions, order, continuity, edges)
+relaxation = False
+# gcs = LinearGCS(regions, edges)
+# waypoints, results_dict, best_path = gcs.SolvePath(relaxation)
+
+order = 3
+continuity = 1
+gcs = BezierGCS(regions, order, continuity, edges)
 gcs.addSourceTarget(start, goal)
 gcs.setSolver(MosekSolver())
-waypoints, results_dict, best_path = gcs.SolvePath(relaxation)
+traj, results_dict, best_path = gcs.SolvePath(relaxation)
+N = 1000
+waypoints = np.zeros((N,2))
+n = 0
+for t in np.linspace(traj.start_time(), traj.end_time(), N):
+    waypoints[n,:] = traj.value(t).reshape(-1)
+    n+=1
 
 print("\n")
 soln_vid = []
@@ -77,23 +68,9 @@ for edge in best_path:
     soln_vid.append(edge.u().id().get_value())
 
 soln_vid = [s-1 for s in soln_vid]
-# print(soln_vid, sep=", ")
 
-
-# corres = []
-# for i, w in enumerate(waypoints):
-#     for j, r in enumerate(regions):
-#         print(w)
-#         if r.PointInSet(w):
-#             corres.append([i, j])
-
-# print(corres)
 
 print(waypoints.shape)
-opt_soln = np.loadtxt('./data/opt_soln.txt', delimiter=',')
-print(opt_soln.T.shape)
-
 plot_maze()
 plt.plot(*waypoints, 'b')
-plt.plot(*opt_soln.T, 'r')
 plt.show()

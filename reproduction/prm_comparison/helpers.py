@@ -7,7 +7,7 @@ from pydrake.systems.framework import DiagramBuilder
 from pydrake.multibody.plant import AddMultibodyPlantSceneGraph, MultibodyPlant
 from pydrake.multibody.parsing import LoadModelDirectives, Parser, ProcessModelDirectives
 from pydrake.common import FindResourceOrThrow
-from pydrake.geometry import (IllustrationProperties, MeshcatVisualizer,
+from pydrake.geometry import (MeshcatVisualizer,
                               MeshcatVisualizerParams, Rgba, RoleAssign, Role,
                               SceneGraph)
 from pydrake.geometry.optimization import VPolytope, HPolyhedron
@@ -15,13 +15,12 @@ from pydrake.math import RigidTransform, RollPitchYaw, RotationMatrix
 from pydrake.perception import PointCloud
 from pydrake.all import MultibodyPositionToGeometryPose
 from pydrake.systems.primitives import TrajectorySource, Multiplexer, ConstantVectorSource
-from pydrake.multibody.tree import RevoluteJoint
 from pydrake.trajectories import PiecewisePolynomial
 from pydrake.systems.analysis import Simulator
 from pydrake.multibody import inverse_kinematics
 from pydrake.solvers import Solve
 
-from reproduction.util import GcsDir, FindModelFile
+from gcs.util import GcsDir, FindModelFile
 
 
 def ForwardKinematics(q_list: List[Sequence[float]]) -> List[RigidTransform]:

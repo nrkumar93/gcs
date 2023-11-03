@@ -113,6 +113,60 @@ class BaseGCS:
 
         return source_edges, target_edges
 
+    def addSource(self, source):
+        if self.source is not None:
+            self.gcs.RemoveVertex(self.source)
+
+        assert len(source) == self.dimension
+
+        vertices = self.gcs.Vertices()
+        # Add edges connecting source and target to graph
+        self.source = self.gcs.AddVertex(Point(source), "source")
+
+        # Add edges connecting source and target to graph
+        edges = [[], []]
+        for ii in range(len(self.regions)):
+            if self.regions[ii].PointInSet(source):
+                edges[0].append(ii)
+
+        if not (len(edges[0]) > 0):
+            raise ValueError('Source vertex is not connected.')
+
+        source_edges = []
+        for ii in edges[0]:
+            u = vertices[ii]
+            edge = self.gcs.AddEdge(self.source, u, f"(source, {u.name()})")
+            source_edges.append(edge)
+
+        return source_edges
+
+    def addTarget(self, target):
+        if self.target is not None:
+            self.gcs.RemoveVertex(self.target)
+
+        assert len(target) == self.dimension
+
+        vertices = self.gcs.Vertices()
+        # Add edges connecting source and target to graph
+        self.target = self.gcs.AddVertex(Point(target), "target")
+
+        # Add edges connecting source and target to graph
+        edges = [[], []]
+        for ii in range(len(self.regions)):
+            if self.regions[ii].PointInSet(target):
+                edges[1].append(ii)
+
+        if not (len(edges[1]) > 0):
+            raise ValueError('Target vertex is not connected.')
+
+        target_edges = []
+        for ii in edges[1]:
+            u = vertices[ii]
+            edge = self.gcs.AddEdge(u, self.target, f"({u.name()}, target)")
+            target_edges.append(edge)
+
+        return target_edges
+
     def findEdgesViaOverlaps(self):
         edges = []
         for ii in range(len(self.regions)):

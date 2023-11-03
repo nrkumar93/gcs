@@ -1,5 +1,3 @@
-import numpy as np
-import os
 import time
 from copy import copy
 
@@ -27,7 +25,7 @@ from gcs.bezier import BezierGCS
 from gcs.linear import LinearGCS
 from gcs.rounding import *
 from reproduction.prm_comparison.helpers import set_transparency_of_models
-from reproduction.util import *
+from gcs.util import *
 
 def getIkSeeds():
     return {

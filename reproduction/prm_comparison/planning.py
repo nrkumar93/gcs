@@ -6,7 +6,7 @@ from pydrake.all import (PRMPlanner, PathProcessor,
                          ProcessModelDirectives, PRMPlannerQueryParameters,
                          PathProcessorParameters)
 
-from reproduction.util import FindModelFile, GcsDir
+from gcs.util import FindModelFile, GcsDir
 import pickle
 import numpy as np
 

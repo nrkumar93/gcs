@@ -319,7 +319,7 @@ class BezierGCS(BaseGCS):
             rounding, preprocessing, verbose)
 
         if best_path is None:
-            return None, results_dict
+            return None, results_dict, None
 
         # Extract trajectory control points
         knots = np.zeros(self.order + 1)
@@ -350,7 +350,7 @@ class BezierGCS(BaseGCS):
         path = BsplineTrajectory(BsplineBasis(self.order + 1, knots), path_control_points)
         time_traj = BsplineTrajectory(BsplineBasis(self.order + 1, knots), time_control_points)
 
-        return BezierTrajectory(path, time_traj), results_dict
+        return BezierTrajectory(path, time_traj), results_dict, best_path
 
 class BezierTrajectory:
     def __init__(self, path_traj, time_traj):
