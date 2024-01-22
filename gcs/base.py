@@ -190,10 +190,12 @@ class BaseGCS:
     def findStartGoalEdges(self, start, goal):
         edges = [[], []]
         for ii in range(len(self.regions)):
+            if ii==4: continue
             if self.regions[ii].PointInSet(start):
                 edges[0].append(ii)
             if self.regions[ii].PointInSet(goal):
                 edges[1].append(ii)
+        print(edges)
         return edges
 
     def setSolver(self, solver):
