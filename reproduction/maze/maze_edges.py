@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.collections import PatchCollection
 from random import choice, randint, seed
 
-from pydrake.geometry.optimization import HPolyhedron
+# from pydrake.geometry.optimization import HPolyhedron
 from pydrake.solvers import MosekSolver
 
 from gcs.bezier import BezierGCS
@@ -44,16 +44,23 @@ def plot_maze():
     plt.plot(*start, 'kx', markersize=10)
     plt.plot(*goal, 'kx', markersize=10)
 
+temp = 0
 edge_lines = []
 for e in edges:
-    print(e)
+    temp += 1
+    if temp > 7:
+        break
     c1 = regions[e[0]].ChebyshevCenter()
     c2 = regions[e[1]].ChebyshevCenter()
     edge_lines.append([c1, c2])
 
 plot_maze()
-for l in edge_lines:
+for l, e in zip(edge_lines, edges):
     plt.plot([l[0][0], l[1][0]], [l[0][1], l[1][1]], 'b-')
+    plt.text(l[0][0], l[0][1], str(e[0]))
+    plt.text(l[1][0], l[1][1], str(e[1]))
 
 
+plt.xlim([0,2])
+plt.ylim([0,10])
 plt.show()
