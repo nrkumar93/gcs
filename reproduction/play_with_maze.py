@@ -64,17 +64,17 @@ gcs = LinearGCS(regions, edges)
 # order = 5
 # continuity = 3
 # gcs = BezierGCS(regions, order, continuity, edges)
-gcs.addSourceTarget(start, goal)
-gcs.setSolver(MosekSolver())
-waypoints, results_dict, best_path = gcs.SolvePath(relaxation)
+# gcs.addSourceTarget(start, goal)
+# gcs.setSolver(MosekSolver())
+# waypoints, results_dict, best_path = gcs.SolvePath(relaxation)
 
-print("\n")
-soln_vid = []
-for edge in best_path:
-    # print(edge.u().id().get_value(), edge.v().id().get_value(), edge.id().get_value())
-    soln_vid.append(edge.u().id().get_value())
+# print("\n")
+# soln_vid = []
+# for edge in best_path:
+#     # print(edge.u().id().get_value(), edge.v().id().get_value(), edge.id().get_value())
+#     soln_vid.append(edge.u().id().get_value())
 
-soln_vid = [s-1 for s in soln_vid]
+# soln_vid = [s-1 for s in soln_vid]
 # print(soln_vid, sep=", ")
 
 
@@ -87,9 +87,9 @@ soln_vid = [s-1 for s in soln_vid]
 
 # print(corres)
 
-print(waypoints.shape)
-# opt_soln = np.loadtxt('./data/opt_soln.txt', delimiter=',')
-opt_soln = np.loadtxt('./data/opt_soln.txt')
+# print(waypoints.shape)
+opt_soln = np.loadtxt('./data/opt_soln.txt', delimiter=',')
+# opt_soln = np.loadtxt('./data/opt_soln.txt')
 print(opt_soln.T.shape)
 
 # find the GCS ID path
@@ -122,7 +122,7 @@ print(gcs_path)
 
 
 plot_maze()
-plt.plot(*waypoints, 'b')
+# plt.plot(*waypoints, 'b')
 plt.plot(*opt_soln.T, 'r')
 # plt.plot(xx, yy, 'b')
 

@@ -46,21 +46,27 @@ def plot_maze():
 
 temp = 0
 edge_lines = []
+annot_edges = []
 for e in edges:
     temp += 1
-    if temp > 7:
-        break
+    # if temp > 7:
+    #     break
+    if e[0] < 2490 or e[1] < 2490:
+        continue
     c1 = regions[e[0]].ChebyshevCenter()
     c2 = regions[e[1]].ChebyshevCenter()
     edge_lines.append([c1, c2])
+    annot_edges.append(e)
 
 plot_maze()
-for l, e in zip(edge_lines, edges):
+for l, e in zip(edge_lines, annot_edges):
     plt.plot([l[0][0], l[1][0]], [l[0][1], l[1][1]], 'b-')
     plt.text(l[0][0], l[0][1], str(e[0]))
     plt.text(l[1][0], l[1][1], str(e[1]))
 
 
-plt.xlim([0,2])
-plt.ylim([0,10])
+# plt.xlim([0,2])
+# plt.ylim([0,10])
+plt.xlim([48,50])
+plt.ylim([40,50])
 plt.show()
