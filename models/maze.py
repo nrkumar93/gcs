@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from random import choice
 
 class Cell:
-    """A cell in the maze. A maze "Cell" is a point in the grid which may be surrounded by walls to
+    """A cell in the maze2d. A maze2d "Cell" is a point in the grid which may be surrounded by walls to
     the north, east, south or west.
     """
 
@@ -26,8 +26,8 @@ class Maze:
     """A Maze, represented as a grid of cells."""
 
     def __init__(self, nx, ny):
-        """Initialize the maze grid.
-        The maze consists of nx x ny cells.
+        """Initialize the maze2d grid.
+        The maze2d consists of nx x ny cells.
 
         """
 
@@ -42,11 +42,11 @@ class Maze:
     def plot(self, linewidth):
         plt.gca().axis('off')
         
-        # Pad the maze all around by this amount.
+        # Pad the maze2d all around by this amount.
         width = self.nx
         height = self.ny
         
-        # Draw the South and West maze borders.
+        # Draw the South and West maze2d borders.
         for x in range(self.nx):
             for y in range(self.ny):
                 if self.cell_at(x, y).walls['S'] and (x != 0 or y != 0):
@@ -54,7 +54,7 @@ class Maze:
                 if self.cell_at(x, y).walls['W']:
                     plt.plot([x, x], [y, y + 1], c='k', linewidth=linewidth)
                     
-        # Draw the North and East maze border, which won't have been drawn
+        # Draw the North and East maze2d border, which won't have been drawn
         # by the procedure above.
         plt.plot([0, width - 1], [height, height], c='k', linewidth=linewidth)
         plt.plot([width, width], [0, height], c='k', linewidth=linewidth)
@@ -80,7 +80,7 @@ class Maze:
         n = self.nx * self.ny
         cell_stack = []
         current_cell = self.cell_at(0, 0)
-        # Total number of visited cells during maze construction.
+        # Total number of visited cells during maze2d construction.
         nv = 1
 
         while nv < n:
