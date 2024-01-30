@@ -37,20 +37,20 @@ while knock_downs > 0:
 # for x in range(maze_size):
 #     for y in range(maze_size):
 #         regions.append(HPolyhedron.MakeBox([x, y], [x+1., y+1.]))
-#         C = y + x * maze.ny
-#         if not maze.map[x][y].walls['N']:
+#         C = y + x * maze2d.ny
+#         if not maze2d.map[x][y].walls['N']:
 #             edges.append((C, C + 1))
-#         if not maze.map[x][y].walls['S']:
+#         if not maze2d.map[x][y].walls['S']:
 #             edges.append((C, C - 1))
-#         if not maze.map[x][y].walls['E']:
-#             edges.append((C, C + maze.ny))
-#         if not maze.map[x][y].walls['W']:
-#             edges.append((C, C - maze.ny))
-# util.SerializeRegions(regions, './data/maze.csv')
+#         if not maze2d.map[x][y].walls['E']:
+#             edges.append((C, C + maze2d.ny))
+#         if not maze2d.map[x][y].walls['W']:
+#             edges.append((C, C - maze2d.ny))
+# util.SerializeRegions(regions, './data/maze2d.csv')
 # util.SerializeEdges(edges, './data/maze_edges.csv')
 
-regions = util.DeserializeRegions('./data/maze.csv')
-edges = util.DeserializeEdges('./data/maze_edges.csv')
+regions = util.DeserializeRegions('data/maze2d/maze.csv')
+edges = util.DeserializeEdges('data/maze2d/maze_edges.csv')
 
 
 def plot_maze():

@@ -34,8 +34,8 @@ while knock_downs > 0:
         maze.knock_down_wall(cell, choice(walls))
         knock_downs -= 1
 
-regions = util.DeserializeRegions('../data/maze.csv')
-edges = util.DeserializeEdges('../data/maze_edges.csv')
+regions = util.DeserializeRegions('../data/maze2d/maze.csv')
+edges = util.DeserializeEdges('../data/maze2d/maze_edges.csv')
 
 def plot_maze():
     plt.figure(figsize=(5,5))

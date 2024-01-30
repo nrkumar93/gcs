@@ -22,8 +22,8 @@ while knock_downs > 0:
         maze.knock_down_wall(cell, choice(walls))
         knock_downs -= 1
 
-regions = util.DeserializeRegions('./data/maze.csv')
-edges = util.DeserializeEdges('./data/maze_edges.csv')
+regions = util.DeserializeRegions('data/maze2d/maze.csv')
+edges = util.DeserializeEdges('data/maze2d/maze_edges.csv')
 incom_edge_count = np.loadtxt('/home/gaussian/cmu_ri_phd/phd_research/ixg/logs/insatxgcs_incom_edge_count_1.txt', delimiter=' ')
 # incom_edge_count = np.loadtxt('/home/gaussian/cmu_ri_phd/phd_research/ixg/logs/insatxgcs_lb_cost.txt', delimiter=' ')
 xx = []
